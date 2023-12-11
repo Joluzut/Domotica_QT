@@ -56,12 +56,12 @@ void MainWindow::sendData()
 
     if(toggle == 0)
     {
-        Char = "1/r/n";
+        Char = "1\r\n";
         toggle = 1;
     }
     else
     {
-        Char = "2/r/n";
+        Char = "2\r\n";
         toggle = 0;
     }
 
