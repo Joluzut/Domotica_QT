@@ -14,97 +14,376 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="ComLabel">
+   <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>91</width>
-      <height>21</height>
+      <x>0</x>
+      <y>0</y>
+      <width>691</width>
+      <height>371</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Connect to COM:</string>
+    <property name="tabPosition">
+     <enum>QTabWidget::North</enum>
     </property>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <widget class="QWidget" name="connectTab">
+     <attribute name="title">
+      <string>Connect</string>
+     </attribute>
+     <widget class="QLabel" name="ComLabel">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>140</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Connect to COM:</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="ComSpinBox">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>140</y>
+        <width>42</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="value">
+       <number>16</number>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="ComButton">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>140</y>
+        <width>80</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Connect</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="ComDisButton">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>140</y>
+        <width>80</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Disconnect</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="moniotorTab">
+     <attribute name="title">
+      <string>Monitor</string>
+     </attribute>
+     <widget class="QLabel" name="ledStatusDongle1">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>70</y>
+        <width>151</width>
+        <height>201</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: black;</string>
+      </property>
+      <property name="text">
+       <string>LED</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="ledStatusDongle2">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>70</y>
+        <width>151</width>
+        <height>201</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: black;</string>
+      </property>
+      <property name="text">
+       <string>LED</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="ledStatusDongle3">
+      <property name="geometry">
+       <rect>
+        <x>490</x>
+        <y>70</y>
+        <width>151</width>
+        <height>201</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: black;</string>
+      </property>
+      <property name="text">
+       <string>LED</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelDongle1">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>50</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Dongle 1</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelDongle2">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>50</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Dongle 2</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelDongle3">
+      <property name="geometry">
+       <rect>
+        <x>490</x>
+        <y>50</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Dongle 3</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="coupleTab">
+     <attribute name="title">
+      <string>Couple</string>
+     </attribute>
+     <widget class="QFrame" name="frame">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>110</y>
+        <width>111</width>
+        <height>101</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QRadioButton" name="radioButtonDongle1">
+         <property name="text">
+          <string>Dongle 1</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="radioButtonDongle2">
+         <property name="text">
+          <string>Dongle 2</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="radioButtonDongle3">
+         <property name="text">
+          <string>Dongle 3</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QFrame" name="frame_2">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>110</y>
+        <width>111</width>
+        <height>101</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QRadioButton" name="radioLedDongle1">
+         <property name="text">
+          <string>Dongle 1</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="radioLed2">
+         <property name="text">
+          <string>Dongle 2</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="radioLed3">
+         <property name="text">
+          <string>Dongle 3</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QLabel" name="labelButton">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>90</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Button</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelLED">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>90</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>LED</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="ButtonCouple">
+      <property name="geometry">
+       <rect>
+        <x>490</x>
+        <y>150</y>
+        <width>81</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Couple</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="controlTab">
+     <attribute name="title">
+      <string>Control</string>
+     </attribute>
+     <widget class="QPushButton" name="ButtonDongle1">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>120</y>
+        <width>80</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>On/ Off</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="ButtonDongle2">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>120</y>
+        <width>80</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>On/ Off</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="ButtonDongle3">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>120</y>
+        <width>80</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>On/ Off</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelDongle1_2">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>100</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Dongle 1</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelDongle2_2">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>100</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Dongle 2</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelDongle3_2">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>100</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Dongle 3</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
-   <widget class="QSpinBox" name="ComSpinBox">
-    <property name="geometry">
-     <rect>
-      <x>100</x>
-      <y>10</y>
-      <width>42</width>
-      <height>25</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="ComButton">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>10</y>
-      <width>80</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Connect</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="LedLabel">
-    <property name="geometry">
-     <rect>
-      <x>180</x>
-      <y>100</y>
-      <width>151</width>
-      <height>201</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: black;</string>
-    </property>
-    <property name="text">
-     <string>LED</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="LedButton">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>190</y>
-      <width>80</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>On/Off</string>
-    </property>
-   </widget>
-   <widget class="QTextBrowser" name="textBrowser">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>101</y>
-      <width>256</width>
-      <height>201</height>
-     </rect>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>688</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuVirtual_LED">
-    <property name="title">
-     <string>Virtual LED</string>
-    </property>
-   </widget>
-   <addaction name="menuVirtual_LED"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actiong">
