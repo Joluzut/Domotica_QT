@@ -21,7 +21,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Connect signals and slots
     connect(serial, &QSerialPort::readyRead, this,&MainWindow::startThread);
-    // connect(serial, &QSerialPort::readyRead, this, &MainWindow::handleReadyRead);
     connect(ui->ComButton, &QPushButton::clicked, this, &MainWindow::connectCom);
     connect(ui->ComDisButton, &QPushButton::clicked, this, &MainWindow::closeCom);
     connect(ui->ButtonDongle1, &QPushButton::clicked, this, &MainWindow::dataDongle1);
@@ -50,31 +49,16 @@ void MainWindow::startThread()
 
     timer.start();
     qDebug() << "startThread called";
-    // Create a worker with a function and parameters
-    // if(serialworker != nullptr && serialworker->isRunning() == true)
-    // {
-    //     qDebug() << "Serialworker exists already/is running";
-    //     return;
-    // }
     serialworker = new Worker([this]() {
         readSerialThread();
     });
-    // Create a thread pool and start the worker
-    // threadPool = QThreadPool::globalInstance(); // Use the global instance
     connect(serialworker, &Worker::finished, this, &MainWindow::readSerialThreadFinished);
     // Start the worker
     QThreadPool::globalInstance()->start(serialworker);
-    // qDebug() << "Started";
-    // Wait for the thread pool to finish
-    // threadPool->waitForDone();
-
-// qDebug() << "Should be done";
 }
 
 void MainWindow::readSerialThread()
 {
-
-    // this->data = serial->readAll();
     // Wait for 1 second
     QThread::msleep(500);
     qDebug() << "THREAD " << QThread::currentThreadId();
@@ -94,6 +78,7 @@ void MainWindow::handleReadyRead()
     data = serial->readAll();
     // ui->textBrowser->clear();
     ui->textBrowser->append(data);
+    ui->textBrowser1->append(data);
     QString searchString1 = "3";
     QString searchString2 = "4";
     QString searchString3 = "5";
@@ -130,7 +115,7 @@ void MainWindow::connectCom()
     // Convert int to QString and concatenate with the port name prefix
     QString portName = "COM" + QString::number(x);
     qDebug() << portName;
-    serial->setPortName("/dev/tty.usbmodem0006851197611");
+    serial->setPortName(portName);
 
     serial->setBaudRate(QSerialPort::Baud115200);
     serial->setDataBits(QSerialPort::Data8);
@@ -173,12 +158,10 @@ int MainWindow::sendData(QString Dongle, int toggle)
 {
     QString Char;
     if (toggle == 0) {
-        Char = "BTN\r";
-            //"1\r" +Dongle;
+        Char = "S1L" +Dongle+"\r";
         toggle = 1;
     } else {
-        Char = "BTN\r";
-            //"0\r" +Dongle;
+        Char = "S0L" +Dongle+"\r";
         toggle = 0;
     }
 
@@ -192,10 +175,15 @@ void MainWindow::makeRadioGroups()
 {
     QList<QRadioButton *> allButtonsB = ui->groupBoxButton->findChildren<QRadioButton *>();
     QList<QRadioButton *> allButtonsL = ui->groupBoxLed->findChildren<QRadioButton *>();
+    QList<QRadioButton *> allButtonsG = ui->groupBoxGroups->findChildren<QRadioButton *>();
     for(int i = 0; i < allButtonsB.size(); ++i)
     {
         groupB.addButton(allButtonsB[i],i);
         groupL.addButton(allButtonsL[i],i);
+    }
+    for(int j = 0; j < allButtonsG.size(); ++j)
+    {
+        groupG.addButton(allButtonsG[j],j);
     }
 }
 
@@ -203,20 +191,43 @@ void MainWindow::connectDongle()
 {
     int B;
     int L;
+    int G;
     B = groupB.checkedId();
     L = groupL.checkedId();
+    G = groupG.checkedId();
     QString BS;
     QString LS;
+    QString GS;
     QString combinedString;
-    switch (B) {
+
+    switch (G) {
     case 0:
-        BS = Dongle1;
+        GS = "G0xC001";
         break;
     case 1:
-        BS = Dongle2;
+        GS = "G0xC002";
         break;
     case 2:
-        BS = Dongle3;
+        GS = "G0xC003";
+        break;
+    default:
+        // Handle other cases if needed
+        GS = "unknown";
+        break;
+    }
+
+    switch (B) {
+    case 0:
+        BS = "B"+Dongle1;
+        break;
+    case 1:
+        BS = "B"+Dongle2;
+        break;
+    case 2:
+        BS = "B"+Dongle3;
+        break;
+    case 3:
+        BS = "";
         break;
     default:
         // Handle other cases if needed
@@ -226,13 +237,16 @@ void MainWindow::connectDongle()
 
     switch (L) {
     case 0:
-        LS = Dongle1;
+        LS = "L"+Dongle1;
         break;
     case 1:
-        LS = Dongle2;
+        LS = "L"+Dongle2;
         break;
     case 2:
-        LS = Dongle3;
+        LS = "L"+Dongle3;
+        break;
+    case 3:
+        LS = "";
         break;
     default:
         // Handle other cases if needed
@@ -240,6 +254,13 @@ void MainWindow::connectDongle()
         break;
     }
 
-    combinedString ="B" + BS + "L" + LS;
-    qDebug() << combinedString;
+
+    qDebug() << BS+LS+GS;
+    combinedString = BS + GS + "\r";
+    QByteArray array = combinedString.toUtf8();
+    serial->write(array);
+    QThread::sleep(1);
+    combinedString = LS + GS + "\r";
+    array = combinedString.toUtf8();
+    serial->write(array);
 }

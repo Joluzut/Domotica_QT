@@ -74,6 +74,7 @@ private:
     int one = 0;          ///< Another variable
     QButtonGroup groupB;
     QButtonGroup groupL;
+    QButtonGroup groupG;
     QString Dongle1 = "0x0001";
     QString Dongle2 = "0x0002";
     QString Dongle3 = "0x0003";
