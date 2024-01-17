@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <QButtonGroup>
 
 /**
  * @brief The MainWindow class
@@ -52,7 +53,9 @@ public:
     void dataDongle1();
     void dataDongle2();
     void dataDongle3();
-    void sendData(QString);
+    void makeRadioGroups();
+    void connectDongle();
+    int sendData(QString, int);
 
 
 private:
@@ -62,5 +65,10 @@ private:
     int toggle2 = 0;
     int toggle3 = 0;
     int one = 0;          ///< Another variable
+    QButtonGroup groupB;
+    QButtonGroup groupL;
+    QString Dongle1 = "0x0001";
+    QString Dongle2 = "0x0002";
+    QString Dongle3 = "0x0003";
 };
 #endif // MAINWINDOW_H

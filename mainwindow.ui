@@ -27,7 +27,7 @@
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="connectTab">
      <attribute name="title">
@@ -182,38 +182,48 @@
      <attribute name="title">
       <string>Couple</string>
      </attribute>
-     <widget class="QFrame" name="frame">
+     <widget class="QPushButton" name="ButtonCouple">
       <property name="geometry">
        <rect>
-        <x>120</x>
-        <y>110</y>
-        <width>111</width>
-        <height>101</height>
+        <x>490</x>
+        <y>150</y>
+        <width>81</width>
+        <height>21</height>
        </rect>
       </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+      <property name="text">
+       <string>Couple</string>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+     </widget>
+     <widget class="QGroupBox" name="groupBoxButton">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>100</y>
+        <width>98</width>
+        <height>121</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Button</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QRadioButton" name="radioButtonDongle1">
+        <widget class="QRadioButton" name="radioButton1">
          <property name="text">
           <string>Dongle 1</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QRadioButton" name="radioButtonDongle2">
+        <widget class="QRadioButton" name="radioButton2">
          <property name="text">
           <string>Dongle 2</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QRadioButton" name="radioButtonDongle3">
+        <widget class="QRadioButton" name="radioButton3">
          <property name="text">
           <string>Dongle 3</string>
          </property>
@@ -221,24 +231,21 @@
        </item>
       </layout>
      </widget>
-     <widget class="QFrame" name="frame_2">
+     <widget class="QGroupBox" name="groupBoxLed">
       <property name="geometry">
        <rect>
-        <x>320</x>
-        <y>110</y>
-        <width>111</width>
-        <height>101</height>
+        <x>340</x>
+        <y>100</y>
+        <width>98</width>
+        <height>121</height>
        </rect>
       </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+      <property name="title">
+       <string>Led</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QRadioButton" name="radioLedDongle1">
+        <widget class="QRadioButton" name="radioLed1">
          <property name="text">
           <string>Dongle 1</string>
          </property>
@@ -259,45 +266,6 @@
         </widget>
        </item>
       </layout>
-     </widget>
-     <widget class="QLabel" name="labelButton">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>90</y>
-        <width>49</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Button</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelLED">
-      <property name="geometry">
-       <rect>
-        <x>320</x>
-        <y>90</y>
-        <width>49</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>LED</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="ButtonCouple">
-      <property name="geometry">
-       <rect>
-        <x>490</x>
-        <y>150</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Couple</string>
-      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="controlTab">

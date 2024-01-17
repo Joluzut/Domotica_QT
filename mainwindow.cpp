@@ -1,3 +1,4 @@
+#include <QButtonGroup>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -14,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     serial(new QSerialPort(this))
 {
     ui->setupUi(this);
-
+    makeRadioGroups();
     // Connect signals and slots
     connect(serial, &QSerialPort::readyRead, this, &MainWindow::handleReadyRead);
     connect(ui->ComButton, &QPushButton::clicked, this, &MainWindow::connectCom);
@@ -22,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->ButtonDongle1, &QPushButton::clicked, this, &MainWindow::dataDongle1);
     connect(ui->ButtonDongle2, &QPushButton::clicked, this, &MainWindow::dataDongle2);
     connect(ui->ButtonDongle3, &QPushButton::clicked, this, &MainWindow::dataDongle3);
+    connect(ui->ButtonCouple, &QPushButton::clicked, this, &MainWindow::connectDongle);
 }
 
 /**
@@ -97,46 +99,90 @@ void MainWindow::closeCom()
 
 void MainWindow::dataDongle1()
 {
-    QString Char;
-    if (toggle1 == 0) {
-        Char = "1\r";
-        toggle1 = 1;
-    } else {
-        Char = "2\r";
-        toggle1 = 0;
-    }
-    sendData(Char);
+    toggle1 = sendData(Dongle1, toggle1);
 }
 
 void MainWindow::dataDongle2()
 {
-    QString Char;
-    if (toggle2 == 0) {
-        Char = "1\r";
-        toggle2 = 1;
-    } else {
-        Char = "2\r";
-        toggle2 = 0;
-    }
-    sendData(Char);
+    toggle2 = sendData(Dongle2, toggle2);
 }
 
 void MainWindow::dataDongle3()
 {
-    QString Char;
-    if (toggle3 == 0) {
-        Char = "1\r";
-        toggle3 = 1;
-    } else {
-        Char = "2\r";
-        toggle3 = 0;
-    }
-    sendData(Char);
+    toggle3 = sendData(Dongle3, toggle3);
 }
 
-void MainWindow::sendData(QString Char)
+int MainWindow::sendData(QString Dongle, int toggle)
 {
+    QString Char;
+    if (toggle == 0) {
+        Char = "BTN\r";
+            //"1\r" +Dongle;
+        toggle = 1;
+    } else {
+        Char = "BTN\r";
+            //"0\r" +Dongle;
+        toggle = 0;
+    }
+
     QByteArray byte = Char.toUtf8();
     serial->write(byte);
     qDebug() << Char;
+    return toggle;
+}
+
+void MainWindow::makeRadioGroups()
+{
+    QList<QRadioButton *> allButtonsB = ui->groupBoxButton->findChildren<QRadioButton *>();
+    QList<QRadioButton *> allButtonsL = ui->groupBoxLed->findChildren<QRadioButton *>();
+    for(int i = 0; i < allButtonsB.size(); ++i)
+    {
+        groupB.addButton(allButtonsB[i],i);
+        groupL.addButton(allButtonsL[i],i);
+    }
+}
+
+void MainWindow::connectDongle()
+{
+    int B;
+    int L;
+    B = groupB.checkedId();
+    L = groupL.checkedId();
+    QString BS;
+    QString LS;
+    QString combinedString;
+    switch (B) {
+    case 0:
+        BS = Dongle1;
+        break;
+    case 1:
+        BS = Dongle2;
+        break;
+    case 2:
+        BS = Dongle3;
+        break;
+    default:
+        // Handle other cases if needed
+        BS = "unknown";
+        break;
+    }
+
+    switch (L) {
+    case 0:
+        LS = Dongle1;
+        break;
+    case 1:
+        LS = Dongle2;
+        break;
+    case 2:
+        LS = Dongle3;
+        break;
+    default:
+        // Handle other cases if needed
+        LS = "unknown";
+        break;
+    }
+
+    combinedString ="B" + BS + "L" + LS;
+    qDebug() << combinedString;
 }
