@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Connect signals and slots
     connect(serial, &QSerialPort::readyRead, this,&MainWindow::startThread);
-    connect(serial, &QSerialPort::readyRead, this, &MainWindow::handleReadyRead);
+    // connect(serial, &QSerialPort::readyRead, this, &MainWindow::handleReadyRead);
     connect(ui->ComButton, &QPushButton::clicked, this, &MainWindow::connectCom);
     connect(ui->ComDisButton, &QPushButton::clicked, this, &MainWindow::closeCom);
     connect(ui->ButtonDongle1, &QPushButton::clicked, this, &MainWindow::dataDongle1);
@@ -41,12 +41,21 @@ MainWindow::~MainWindow()
 
 void MainWindow::startThread()
 {
-    // Create a worker with a function and parameters
-    if(serialworker != nullptr && serialworker->isRunning())
+    static QElapsedTimer timer;
+    if (timer.isValid() && timer.elapsed() < 1000)
     {
-        qDebug() << "Serialworker exists already/is running";
+        qDebug() << "startThread called too soon after last call";
         return;
     }
+
+    timer.start();
+    qDebug() << "startThread called";
+    // Create a worker with a function and parameters
+    // if(serialworker != nullptr && serialworker->isRunning() == true)
+    // {
+    //     qDebug() << "Serialworker exists already/is running";
+    //     return;
+    // }
     serialworker = new Worker([this]() {
         readSerialThread();
     });
@@ -65,7 +74,9 @@ void MainWindow::startThread()
 void MainWindow::readSerialThread()
 {
 
-    this->data = serial->readAll();
+    // this->data = serial->readAll();
+    // Wait for 1 second
+    QThread::msleep(500);
     qDebug() << "THREAD " << QThread::currentThreadId();
 }
 
@@ -73,14 +84,15 @@ void MainWindow::readSerialThreadFinished()
 {
     handleReadyRead();
     serialworker = nullptr;
-    // qDebug() << "FINISHED";
+    qDebug() << "FINISHED";
 }
 
 void MainWindow::handleReadyRead()
 {
 
     // data = worker->giveData();
-    // data = serial->readAll();
+    data = serial->readAll();
+    // ui->textBrowser->clear();
     ui->textBrowser->append(data);
     QString searchString1 = "3";
     QString searchString2 = "4";
