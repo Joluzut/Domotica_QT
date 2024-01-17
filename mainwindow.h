@@ -7,6 +7,7 @@
 #include <QButtonGroup>
 #include <QThread>
 #include <QDebug>
+#include <QThreadPool>
 #include "worker.h"
 
 /**
@@ -59,12 +60,14 @@ public:
     void makeRadioGroups();
     void connectDongle();
     int sendData(QString, int);
+    void startThread();
+    void readSerialThread();
+    void readSerialThreadFinished();
 
 
 private:
     Ui::MainWindow *ui;  ///< The user interface object
     QSerialPort *serial;  ///< The serial port object
-    Worker *worker = new Worker();
     int toggle1 = 0;       ///< Toggle variable
     int toggle2 = 0;
     int toggle3 = 0;
@@ -74,6 +77,7 @@ private:
     QString Dongle1 = "0x0001";
     QString Dongle2 = "0x0002";
     QString Dongle3 = "0x0003";
-    QByteArray data;
+    QByteArray data; //Data from serial
+    Worker* serialworker;
 };
 #endif // MAINWINDOW_H

@@ -1,22 +1,13 @@
 #include "worker.h"
 
-Worker::Worker(QObject *parent)
-    : QObject{parent}
-{
-    qInfo() << this << "Constructed"  << QThread::currentThread();
-}
-
+Worker::Worker(std::function<void()> func) : func(func) {}
 Worker::~Worker()
 {
-    qInfo() << this << "Deconstructed"  << QThread::currentThread();
-}
 
-void Worker::run(QSerialPort *serial)
-{
-    data = serial->readAll();
 }
-
-QByteArray Worker::giveData()
-{
-    return data;
+void Worker::run() {
+    isRunning_ = true;
+    func();
+    emit finished(); // Emit the signal when the work is done
+    isRunning_ = false;
 }

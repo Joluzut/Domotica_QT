@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 /**
  * @brief Constructor for the MainWindow class.
  *
@@ -19,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     // Connect signals and slots
-    connect(serial, &QSerialPort::readyRead, worker,&Worker::run);
+    connect(serial, &QSerialPort::readyRead, this,&MainWindow::startThread);
     connect(serial, &QSerialPort::readyRead, this, &MainWindow::handleReadyRead);
     connect(ui->ComButton, &QPushButton::clicked, this, &MainWindow::connectCom);
     connect(ui->ComDisButton, &QPushButton::clicked, this, &MainWindow::closeCom);
@@ -35,13 +36,51 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+
 }
 
+void MainWindow::startThread()
+{
+    // Create a worker with a function and parameters
+    if(serialworker != nullptr && serialworker->isRunning())
+    {
+        qDebug() << "Serialworker exists already/is running";
+        return;
+    }
+    serialworker = new Worker([this]() {
+        readSerialThread();
+    });
+    // Create a thread pool and start the worker
+    // threadPool = QThreadPool::globalInstance(); // Use the global instance
+    connect(serialworker, &Worker::finished, this, &MainWindow::readSerialThreadFinished);
+    // Start the worker
+    QThreadPool::globalInstance()->start(serialworker);
+    // qDebug() << "Started";
+    // Wait for the thread pool to finish
+    // threadPool->waitForDone();
+
+// qDebug() << "Should be done";
+}
+
+void MainWindow::readSerialThread()
+{
+
+    this->data = serial->readAll();
+    qDebug() << "THREAD " << QThread::currentThreadId();
+}
+
+void MainWindow::readSerialThreadFinished()
+{
+    handleReadyRead();
+    serialworker = nullptr;
+    // qDebug() << "FINISHED";
+}
 
 void MainWindow::handleReadyRead()
 {
 
-    data = worker->giveData();
+    // data = worker->giveData();
+    // data = serial->readAll();
     ui->textBrowser->append(data);
     QString searchString1 = "3";
     QString searchString2 = "4";
@@ -79,7 +118,8 @@ void MainWindow::connectCom()
     // Convert int to QString and concatenate with the port name prefix
     QString portName = "COM" + QString::number(x);
     qDebug() << portName;
-    serial->setPortName(portName);
+    serial->setPortName("/dev/tty.usbmodem0006851197611");
+
     serial->setBaudRate(QSerialPort::Baud115200);
     serial->setDataBits(QSerialPort::Data8);
     serial->setParity(QSerialPort::NoParity);
