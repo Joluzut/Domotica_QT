@@ -1,27 +1,26 @@
 #include "mainwindow.h"
-
+#include <QThread>
+#include <QDebug>
+#include "worker.h"
 #include <QApplication>
 
-/**
- * @brief The main function of the application.
- *
- * This function initializes the QApplication, creates an instance of MainWindow,
- * shows the main window, and starts the application event loop.
- *
- * @param argc Number of command line arguments
- * @param argv Array of command line arguments
- * @return Application exit code
- */
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    // Create an instance of the MainWindow
     MainWindow w;
 
-    // Show the main window
+
+    //QThread thread;
+    //thread.setObjectName("Worker Thread");
+    //worker->moveToThread(&thread);
+    //QObject::connect(&thread,&QThread::started,worker,&Worker::run);
+
+
+    qInfo() << "Finished"  << QThread::currentThread();
+
     w.show();
 
-    // Start the application event loop
     return a.exec();
 }

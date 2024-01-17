@@ -16,7 +16,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     makeRadioGroups();
+
+
     // Connect signals and slots
+    connect(serial, &QSerialPort::readyRead, worker,&Worker::run);
     connect(serial, &QSerialPort::readyRead, this, &MainWindow::handleReadyRead);
     connect(ui->ComButton, &QPushButton::clicked, this, &MainWindow::connectCom);
     connect(ui->ComDisButton, &QPushButton::clicked, this, &MainWindow::closeCom);
@@ -37,7 +40,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::handleReadyRead()
 {
-    QByteArray data = serial->readAll();
+
+    data = worker->giveData();
+    ui->textBrowser->append(data);
     QString searchString1 = "3";
     QString searchString2 = "4";
     QString searchString3 = "5";
@@ -75,7 +80,7 @@ void MainWindow::connectCom()
     QString portName = "COM" + QString::number(x);
     qDebug() << portName;
     serial->setPortName(portName);
-    serial->setBaudRate(QSerialPort::Baud9600);
+    serial->setBaudRate(QSerialPort::Baud115200);
     serial->setDataBits(QSerialPort::Data8);
     serial->setParity(QSerialPort::NoParity);
     serial->setStopBits(QSerialPort::OneStop);
