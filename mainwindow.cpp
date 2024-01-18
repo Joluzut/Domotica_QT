@@ -121,7 +121,7 @@ void MainWindow::connectCom()
     // Convert int to QString and concatenate with the port name prefix
     QString portName = "COM" + QString::number(x);
     qDebug() << portName;
-    portName = "/dev/tty.usbmodem0006851197611";
+    // portName = "/dev/tty.usbmodem0006851197611";
     serial->setPortName(portName);
 
     serial->setBaudRate(QSerialPort::Baud115200);
