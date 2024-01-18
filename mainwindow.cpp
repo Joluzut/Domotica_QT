@@ -286,7 +286,7 @@ void MainWindow::radioButtonData(QString string)
 {
     QByteArray array = string.toUtf8();
     serial->write(array);
-    QThread::msleep(1000);
+    QThread::msleep(100);
 }
 
 void MainWindow::refreshStatus()
