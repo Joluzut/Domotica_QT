@@ -27,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->ButtonDongle2, &QPushButton::clicked, this, &MainWindow::dataDongle2);
     connect(ui->ButtonDongle3, &QPushButton::clicked, this, &MainWindow::dataDongle3);
     connect(ui->ButtonCouple, &QPushButton::clicked, this, &MainWindow::connectDongle);
+    connect(ui->ButtonRefresh, &QPushButton::clicked, this, &MainWindow::refreshStatus);
+    connect(ui->ButtonReset, &QPushButton::clicked, this, &MainWindow::resetAll);
 }
 
 /**
@@ -41,7 +43,7 @@ MainWindow::~MainWindow()
 void MainWindow::startThread()
 {
     static QElapsedTimer timer;
-    if (timer.isValid() && timer.elapsed() < 1000)
+    if (timer.isValid() && timer.elapsed() < 800)
     {
         qDebug() << "startThread called too soon after last call";
         return;
@@ -79,31 +81,30 @@ void MainWindow::handleReadyRead()
     // ui->textBrowser->clear();
     ui->textBrowser->append(data);
     ui->textBrowser1->append(data);
-    QString searchString1 = "3";
-    QString searchString2 = "4";
-    QString searchString3 = "5";
-    QString searchString4 = "6";
-    QString searchString5 = "7";
-    QString searchString6 = "8";
-    if (data.contains(searchString1.toUtf8()) && one == 1) {
-        ui->ledStatusDongle1->setStyleSheet("background-color: yellow;");
-    }
-    else if (data.contains(searchString2.toUtf8())) {
+    QString searchString1 = "LEDSTAT0A0x0001";
+    QString searchString2 = "LEDSTAT1A0x0001";
+    QString searchString3 = "LEDSTAT0A0x0002";
+    QString searchString4 = "LEDSTAT1A0x0002";
+    QString searchString5 = "LEDSTAT0A0x0003";
+    QString searchString6 = "LEDSTAT1A0x0003";
+    if (data.contains(searchString1.toUtf8())) {
         ui->ledStatusDongle1->setStyleSheet("background-color: black;");
     }
-    else if (data.contains(searchString3.toUtf8())) {
-        ui->ledStatusDongle2->setStyleSheet("background-color: yellow;");
+    if (data.contains(searchString2.toUtf8())) {
+        ui->ledStatusDongle1->setStyleSheet("background-color: yellow;");
     }
-    else if (data.contains(searchString4.toUtf8())) {
+    if (data.contains(searchString3.toUtf8())) {
         ui->ledStatusDongle2->setStyleSheet("background-color: black;");
     }
-    else if (data.contains(searchString5.toUtf8())) {
-        ui->ledStatusDongle3->setStyleSheet("background-color: yellow;");
+    if (data.contains(searchString4.toUtf8())) {
+        ui->ledStatusDongle2->setStyleSheet("background-color: yellow;");
     }
-    else if (data.contains(searchString6.toUtf8())) {
+    if (data.contains(searchString5.toUtf8())) {
         ui->ledStatusDongle3->setStyleSheet("background-color: black;");
     }
-    one = 1;
+    if (data.contains(searchString6.toUtf8())) {
+        ui->ledStatusDongle3->setStyleSheet("background-color: yellow;");
+    }
 }
 /**
  * @brief Connects to the selected COM port.
@@ -141,7 +142,7 @@ void MainWindow::closeCom()
 
 void MainWindow::dataDongle1()
 {
-    toggle1 = sendData(Dongle1, toggle1);
+    serial->write("BUTTON\r");
 }
 
 void MainWindow::dataDongle2()
@@ -185,6 +186,11 @@ void MainWindow::makeRadioGroups()
     {
         groupG.addButton(allButtonsG[j],j);
     }
+
+    for(int k = 0; k < 5; k++)
+    {
+        LocDongle[k] = "G0xC000";
+    }
 }
 
 void MainWindow::connectDongle()
@@ -198,7 +204,6 @@ void MainWindow::connectDongle()
     QString BS;
     QString LS;
     QString GS;
-    QString combinedString;
 
     switch (G) {
     case 0:
@@ -219,34 +224,54 @@ void MainWindow::connectDongle()
     switch (B) {
     case 0:
         BS = "B"+Dongle1;
+        radioButtonData("RM"+BS+LocDongle[0]+"\r");
+        qDebug() << "RM"+BS+LocDongle[0]+"\r";
+        LocDongle[0] = GS;
         break;
     case 1:
         BS = "B"+Dongle2;
+        radioButtonData("RM"+BS+LocDongle[2]+"\r");
+        qDebug() << "RM"+BS+LocDongle[2]+"\r";
+        LocDongle[2] = GS;
         break;
     case 2:
         BS = "B"+Dongle3;
+        radioButtonData("RM"+BS+LocDongle[4]+"\r");
+        qDebug() << "RM"+BS+LocDongle[4]+"\r";
+        LocDongle[4] = GS;
         break;
     case 3:
-        BS = "";
+        BS = "nothing";
+        qDebug() << "boomboclad";
         break;
     default:
         // Handle other cases if needed
         BS = "unknown";
         break;
     }
-
+    radioButtonData("ADD"+BS+GS+"\r");
+    qDebug() << "ADD"+BS+GS+"\r";
     switch (L) {
     case 0:
         LS = "L"+Dongle1;
+        radioButtonData("RM"+LS+LocDongle[1]+"\r");
+        qDebug() << "RM"+LS+LocDongle[1]+"\r";
+        LocDongle[1] = GS;
         break;
     case 1:
         LS = "L"+Dongle2;
+        radioButtonData("RM"+LS+LocDongle[3]+"\r");
+        qDebug() << "RM"+LS+LocDongle[3]+"\r";
+        LocDongle[3] = GS;
         break;
     case 2:
         LS = "L"+Dongle3;
+        radioButtonData("RM"+LS+LocDongle[5]+"\r");
+        qDebug() << "RM"+LS+LocDongle[5]+"\r";
+        LocDongle[5] = GS;
         break;
     case 3:
-        LS = "";
+        LS = "nothing";
         break;
     default:
         // Handle other cases if needed
@@ -254,13 +279,38 @@ void MainWindow::connectDongle()
         break;
     }
 
+    radioButtonData("ADD"+LS+GS+"\r");
+    qDebug() << "ADD"+LS+GS+"\r";
+}
+void MainWindow::radioButtonData(QString string)
+{
+    QByteArray array = string.toUtf8();
+    serial->write(array);
+    QThread::msleep(1000);
+}
 
-    qDebug() << BS+LS+GS;
-    combinedString = BS + GS + "\r";
-    QByteArray array = combinedString.toUtf8();
-    serial->write(array);
-    QThread::sleep(1);
-    combinedString = LS + GS + "\r";
-    array = combinedString.toUtf8();
-    serial->write(array);
+void MainWindow::refreshStatus()
+{
+    serial->write("getLed0x0001\r");
+    QThread::msleep(100);
+    serial->write("getLed0x0002\r");
+    QThread::msleep(100);
+    serial->write("getLed0x0003\r");
+    QThread::msleep(100);
+
+}
+
+void MainWindow::resetAll()
+{
+ /*   for (int G = 0; G <= 3; G++)
+    {
+        for (int L = 1; L <= 3; L++)
+        {
+            radioButtonData("RML0x000" + QString::number(L) + "G0xC00" + QString::number(G) + "\r");
+            qDebug() << "RML0x000" + QString::number(L) + "G0xC00" + QString::number(G) + "\r";
+            radioButtonData("RMB0x000" + QString::number(L) + "G0xC00" + QString::number(G) + "\r");
+            qDebug() << "RMB0x000" + QString::number(L) + "G0xC00" + QString::number(G) + "\r";
+        }
+    }*/
+    serial->write("RESET");
 }

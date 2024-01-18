@@ -63,6 +63,9 @@ public:
     void startThread();
     void readSerialThread();
     void readSerialThreadFinished();
+    void refreshStatus();
+    void radioButtonData(QString);
+    void resetAll();
 
 
 private:
@@ -80,5 +83,6 @@ private:
     QString Dongle3 = "0x0003";
     QByteArray data; //Data from serial
     Worker* serialworker;
+    QString LocDongle[6];
 };
 #endif // MAINWINDOW_H
