@@ -226,6 +226,9 @@
          <property name="text">
           <string>Dongle 1</string>
          </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -269,6 +272,9 @@
          <property name="text">
           <string>Dongle 1</string>
          </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -311,6 +317,9 @@
         <widget class="QRadioButton" name="radioGroup1">
          <property name="text">
           <string>Group 1</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -439,11 +448,24 @@
      <widget class="QTextBrowser" name="textBrowser">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>15</x>
         <y>90</y>
-        <width>256</width>
+        <width>471</width>
         <height>192</height>
        </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="ButtonGetAllInfo">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>120</y>
+        <width>80</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Info</string>
       </property>
      </widget>
     </widget>

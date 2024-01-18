@@ -18,6 +18,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     makeRadioGroups();
 
+    dongle1.address = "0x0001";
+    dongle2.address = "0x0002";
+    dongle3.address = "0x0003";
+
 
     // Connect signals and slots
     connect(serial, &QSerialPort::readyRead, this,&MainWindow::startThread);
@@ -29,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->ButtonCouple, &QPushButton::clicked, this, &MainWindow::connectDongle);
     connect(ui->ButtonRefresh, &QPushButton::clicked, this, &MainWindow::refreshStatus);
     connect(ui->ButtonReset, &QPushButton::clicked, this, &MainWindow::resetAll);
+    connect(ui->ButtonGetAllInfo, &QPushButton::clicked, this, &MainWindow::getInfo);
 }
 
 /**
@@ -45,7 +50,7 @@ void MainWindow::startThread()
     static QElapsedTimer timer;
     if (timer.isValid() && timer.elapsed() < 800)
     {
-        qDebug() << "startThread called too soon after last call";
+        // qDebug() << "startThread called too soon after last call";
         return;
     }
 
@@ -116,6 +121,7 @@ void MainWindow::connectCom()
     // Convert int to QString and concatenate with the port name prefix
     QString portName = "COM" + QString::number(x);
     qDebug() << portName;
+    portName = "/dev/tty.usbmodem0006851197611";
     serial->setPortName(portName);
 
     serial->setBaudRate(QSerialPort::Baud115200);
@@ -147,12 +153,12 @@ void MainWindow::dataDongle1()
 
 void MainWindow::dataDongle2()
 {
-    toggle2 = sendData(Dongle2, toggle2);
+    toggle2 = sendData(dongle2.address, toggle2);
 }
 
 void MainWindow::dataDongle3()
 {
-    toggle3 = sendData(Dongle3, toggle3);
+    toggle3 = sendData(dongle3.address, toggle3);
 }
 
 int MainWindow::sendData(QString Dongle, int toggle)
@@ -187,116 +193,162 @@ void MainWindow::makeRadioGroups()
         groupG.addButton(allButtonsG[j],j);
     }
 
-    for(int k = 0; k < 5; k++)
+        dongle1.server = "0xC000";
+        dongle2.server = "0xC000";
+        dongle3.server = "0xC000";
+        dongle1.client = "0xC000";
+        dongle2.client = "0xC000";
+        dongle3.client = "0xC000";
+
+}
+
+void MainWindow::startConnectThread()
+{
+    static QElapsedTimer timer;
+    if (timer.isValid() && timer.elapsed() < 800)
     {
-        LocDongle[k] = "G0xC000";
+        // qDebug() << "startThread called too soon after last call";
+        return;
     }
+
+    timer.start();
+    qDebug() << "startThread called";
+    connectWorker = new Worker([this]() {
+        connectDongle();
+    });
+    connect(connectWorker, &Worker::finished, this, &MainWindow::connectThreadFinished);
+    // Start the worker
+    QThreadPool::globalInstance()->start(connectWorker);
+}
+
+void MainWindow::connectThreadFinished()
+{
+
 }
 
 void MainWindow::connectDongle()
 {
-    int B;
-    int L;
-    int G;
-    B = groupB.checkedId();
-    L = groupL.checkedId();
-    G = groupG.checkedId();
-    QString BS;
-    QString LS;
-    QString GS;
+    int B = groupB.checkedId();
+    int L = groupL.checkedId();
+    int G = groupG.checkedId();
+    qDebug() << "B: " << B << " L: " << L << " G: " << G;
+    QString BUTTONADDR;
+    // QString RMBUTTONADDR;
+    // QString RMLEDADDR;
+    QString LEDADDR;
+    QString GROUPADDR;
+    QString RMB;
+    QString ADDB;
+    QString RML;
+    QString ADDL;
+    bool changeButton = true;
+    bool changeLed = true;
+    QString* updateLedADDR;
+    QString* updateButtonADDR;
 
-    switch (G) {
+    switch(B)
+    {
     case 0:
-        GS = "G0xC001";
+        BUTTONADDR = dongle1.address;
+        // RMBUTTONADDR = dongle1.client;
+        updateButtonADDR = &dongle1.client;
         break;
     case 1:
-        GS = "G0xC002";
+        BUTTONADDR = dongle2.address;
+        // RMBUTTONADDR = dongle2.client;
+        updateButtonADDR = &dongle2.client;
         break;
-    case 2:
-        GS = "G0xC003";
-        break;
-    default:
-        // Handle other cases if needed
-        GS = "unknown";
-        break;
-    }
-
-    switch (B) {
-    case 0:
-        BS = "B"+Dongle1;
-        radioButtonData("RM"+BS+LocDongle[0]+"\r");
-        qDebug() << "RM"+BS+LocDongle[0]+"\r";
-        LocDongle[0] = GS;
-        break;
-    case 1:
-        BS = "B"+Dongle2;
-        radioButtonData("RM"+BS+LocDongle[2]+"\r");
-        qDebug() << "RM"+BS+LocDongle[2]+"\r";
-        LocDongle[2] = GS;
-        break;
-    case 2:
-        BS = "B"+Dongle3;
-        radioButtonData("RM"+BS+LocDongle[4]+"\r");
-        qDebug() << "RM"+BS+LocDongle[4]+"\r";
-        LocDongle[4] = GS;
+    case 2: 
+        BUTTONADDR = dongle3.address;
+        // RMBUTTONADDR = dongle3.client;
+        updateButtonADDR = &dongle3.client;
         break;
     case 3:
-        BS = "nothing";
-        qDebug() << "boomboclad";
-        break;
-    default:
-        // Handle other cases if needed
-        BS = "unknown";
-        break;
-    }
-    radioButtonData("ADD"+BS+GS+"\r");
-    qDebug() << "ADD"+BS+GS+"\r";
-    switch (L) {
-    case 0:
-        LS = "L"+Dongle1;
-        radioButtonData("RM"+LS+LocDongle[1]+"\r");
-        qDebug() << "RM"+LS+LocDongle[1]+"\r";
-        LocDongle[1] = GS;
-        break;
-    case 1:
-        LS = "L"+Dongle2;
-        radioButtonData("RM"+LS+LocDongle[3]+"\r");
-        qDebug() << "RM"+LS+LocDongle[3]+"\r";
-        LocDongle[3] = GS;
-        break;
-    case 2:
-        LS = "L"+Dongle3;
-        radioButtonData("RM"+LS+LocDongle[5]+"\r");
-        qDebug() << "RM"+LS+LocDongle[5]+"\r";
-        LocDongle[5] = GS;
-        break;
-    case 3:
-        LS = "nothing";
-        break;
-    default:
-        // Handle other cases if needed
-        LS = "unknown";
+        changeButton = false;
         break;
     }
 
-    radioButtonData("ADD"+LS+GS+"\r");
-    qDebug() << "ADD"+LS+GS+"\r";
+
+    switch(L)
+    {
+    case 0:
+        LEDADDR = dongle1.address;
+        // RMLEDADDR = dongle1.server;
+        updateLedADDR = &dongle1.server;
+        break;
+    case 1:
+        LEDADDR = dongle2.address;
+        // RMLEDADDR = dongle2.server;
+        updateLedADDR = &dongle2.server;
+        break;
+    case 2: 
+        LEDADDR = dongle3.address;
+        // RMLEDADDR = dongle3.server;
+        updateLedADDR = &dongle3.server;
+        break;   
+    case 3:
+        LEDADDR = "";
+        changeLed = false;
+        break;
+    }
+
+    switch(G)
+    {
+    case 0:
+        GROUPADDR = "0xC001";
+        break;
+    case 1:
+        GROUPADDR = "0xC002";
+        break;
+    case 2:
+        GROUPADDR = "0xC003";
+        break;
+    }
+    // serial->write("TEST\r");
+    // QThread::msleep(100);
+    if(changeButton)
+    {
+        // RMB = "RMB" + BUTTONADDR + "G" + *updateButtonADDR + "\r";
+        RMB = "CB" + BUTTONADDR + "G" + GROUPADDR + "GO" + *updateButtonADDR + "\r";
+        radioButtonData(RMB);
+        qDebug() << RMB;
+        // ADDB = "ADDB" + BUTTONADDR + "G" + GROUPADDR + "\r";
+        // radioButtonData("ADDB" + BUTTONADDR + "G" + GROUPADDR + "\r");
+        // qDebug() << ADDB;
+        *updateButtonADDR = GROUPADDR;
+    }
+    // QThread::msleep(100);
+    // serial->write("TEST\r");
+    // QThread::msleep(2000);
+    if(changeLed)
+    {
+        // RML = "RML" + LEDADDR + "G" + *updateLedADDR + "\r";
+        RML = "CL" + LEDADDR + "G" + GROUPADDR + "GO" + *updateLedADDR + "\r";
+        radioButtonData(RML);
+        qDebug() << RML;
+        // ADDL = "ADDL" + LEDADDR + "G" + GROUPADDR + "\r";
+        // radioButtonData("ADDL" + LEDADDR + "G" + GROUPADDR + "\r");
+        // qDebug() << ADDL;
+        *updateLedADDR = GROUPADDR;
+    }
+
 }
 void MainWindow::radioButtonData(QString string)
 {
     QByteArray array = string.toUtf8();
+    // qDebug() << "RadiobuttonDataString: " << string;
     serial->write(array);
-    QThread::msleep(100);
+    // QThread::msleep(300);
 }
 
 void MainWindow::refreshStatus()
 {
     serial->write("getLed0x0001\r");
-    QThread::msleep(100);
+    // QThread::msleep(100);
     serial->write("getLed0x0002\r");
-    QThread::msleep(100);
+    // QThread::msleep(100);
     serial->write("getLed0x0003\r");
-    QThread::msleep(100);
+    // QThread::msleep(100);
 
 }
 
@@ -312,5 +364,14 @@ void MainWindow::resetAll()
             qDebug() << "RMB0x000" + QString::number(L) + "G0xC00" + QString::number(G) + "\r";
         }
     }*/
-    serial->write("RESET");
+    serial->write("RESET\r");
+}
+
+void MainWindow::getInfo()
+{
+
+    radioButtonData("ALL0x0001\r");
+    radioButtonData("ALL0x0002\r");
+    radioButtonData("ALL0x0003\r");
+
 }

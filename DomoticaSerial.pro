@@ -14,6 +14,7 @@ SOURCES += \
     worker.cpp
 
 HEADERS += \
+    dongle.h \
     mainwindow.h \
     worker.h
 

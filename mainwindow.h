@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QThreadPool>
 #include "worker.h"
+#include "dongle.h"
 
 /**
  * @brief The MainWindow class
@@ -66,6 +67,9 @@ public:
     void refreshStatus();
     void radioButtonData(QString);
     void resetAll();
+    void getInfo();
+    void connectThreadFinished();
+    void startConnectThread();
 
 
 private:
@@ -78,11 +82,15 @@ private:
     QButtonGroup groupB;
     QButtonGroup groupL;
     QButtonGroup groupG;
-    QString Dongle1 = "0x0001";
-    QString Dongle2 = "0x0002";
-    QString Dongle3 = "0x0003";
+    // QString Dongle1 = "0x0001";
+    // QString Dongle2 = "0x0002";
+    // QString Dongle3 = "0x0003";
     QByteArray data; //Data from serial
     Worker* serialworker;
-    QString LocDongle[6];
+    Worker* connectWorker;
+    // QString LocDongle[6];
+    dongle dongle1;
+    dongle dongle2;
+    dongle dongle3;
 };
 #endif // MAINWINDOW_H
