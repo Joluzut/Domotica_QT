@@ -27,7 +27,7 @@
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="connectTab">
      <attribute name="title">
@@ -198,8 +198,8 @@
      <widget class="QPushButton" name="ButtonCouple">
       <property name="geometry">
        <rect>
-        <x>520</x>
-        <y>20</y>
+        <x>530</x>
+        <y>130</y>
         <width>91</width>
         <height>31</height>
        </rect>
@@ -339,21 +339,11 @@
        </item>
       </layout>
      </widget>
-     <widget class="QTextBrowser" name="textBrowser1">
-      <property name="geometry">
-       <rect>
-        <x>490</x>
-        <y>90</y>
-        <width>171</width>
-        <height>231</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QPushButton" name="ButtonReset">
       <property name="geometry">
        <rect>
-        <x>520</x>
-        <y>50</y>
+        <x>530</x>
+        <y>170</y>
         <width>93</width>
         <height>29</height>
        </rect>
@@ -448,9 +438,9 @@
      <widget class="QTextBrowser" name="textBrowser">
       <property name="geometry">
        <rect>
-        <x>15</x>
+        <x>45</x>
         <y>90</y>
-        <width>471</width>
+        <width>541</width>
         <height>192</height>
        </rect>
       </property>
@@ -458,7 +448,7 @@
      <widget class="QPushButton" name="ButtonGetAllInfo">
       <property name="geometry">
        <rect>
-        <x>500</x>
+        <x>600</x>
         <y>120</y>
         <width>80</width>
         <height>24</height>

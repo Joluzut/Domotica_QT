@@ -3,9 +3,9 @@
 #include <QString>
 
 typedef struct{
-    QString address;
-    QString server;
-    QString client;
+    QString address;//node address
+    QString server;//led
+    QString client;//button
 }dongle;
 
 
