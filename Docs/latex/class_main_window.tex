@@ -1,0 +1,109 @@
+\doxysection{Main\+Window Class Reference}
+\hypertarget{class_main_window}{}\label{class_main_window}\index{MainWindow@{MainWindow}}
+Inheritance diagram for Main\+Window\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_main_window}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_main_window_a996c5a2b6f77944776856f08ec30858d}{Main\+Window}} (QWidget \texorpdfstring{$\ast$}{*}parent=nullptr)
+\begin{DoxyCompactList}\small\item\em Constructor for \doxylink{class_main_window}{Main\+Window}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_main_window_ae98d00a93bc118200eeef9f9bba1dba7}{\texorpdfstring{$\sim$}{\string~}\+Main\+Window}} ()
+\begin{DoxyCompactList}\small\item\em Destructor for \doxylink{class_main_window}{Main\+Window}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_main_window_a59c3596d76311b6a7bcf4312841d367c}{handle\+Ready\+Read}} ()
+\begin{DoxyCompactList}\small\item\em Slot function to handle data ready to be read from the serial port. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_main_window_ab39729538f26c661934d5f6d681bb014}{connect\+Com}} ()
+\begin{DoxyCompactList}\small\item\em Connect to the serial port. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_main_window_addafe26f0c0ead1be51fc3ecc29961fe}{close\+Com}} ()
+\begin{DoxyCompactList}\small\item\em Close the connection to the serial port. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_main_window_acb51915d4e79932959241a11080a3de7}{send\+Data}} ()
+\begin{DoxyCompactList}\small\item\em Send data through the serial port. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_main_window_a996c5a2b6f77944776856f08ec30858d}\label{class_main_window_a996c5a2b6f77944776856f08ec30858d} 
+\index{MainWindow@{MainWindow}!MainWindow@{MainWindow}}
+\index{MainWindow@{MainWindow}!MainWindow@{MainWindow}}
+\doxysubsubsection{\texorpdfstring{MainWindow()}{MainWindow()}}
+{\footnotesize\ttfamily Main\+Window\+::\+Main\+Window (\begin{DoxyParamCaption}\item[{QWidget \texorpdfstring{$\ast$}{*}}]{parent = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+
+
+
+Constructor for \doxylink{class_main_window}{Main\+Window}. 
+
+Constructor for the \doxylink{class_main_window}{Main\+Window} class.
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & The parent widget (default is nullptr)\\
+\hline
+\end{DoxyParams}
+Initializes the main window, sets up connections, and initializes member variables.
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent} & The parent widget (default is nullptr) \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_main_window_ae98d00a93bc118200eeef9f9bba1dba7}\label{class_main_window_ae98d00a93bc118200eeef9f9bba1dba7} 
+\index{MainWindow@{MainWindow}!````~MainWindow@{\texorpdfstring{$\sim$}{\string~}MainWindow}}
+\index{````~MainWindow@{\texorpdfstring{$\sim$}{\string~}MainWindow}!MainWindow@{MainWindow}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}MainWindow()}{\string~MainWindow()}}
+{\footnotesize\ttfamily Main\+Window\+::\texorpdfstring{$\sim$}{\string~}\+Main\+Window (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Destructor for \doxylink{class_main_window}{Main\+Window}. 
+
+Destructor for the \doxylink{class_main_window}{Main\+Window} class. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_main_window_addafe26f0c0ead1be51fc3ecc29961fe}\label{class_main_window_addafe26f0c0ead1be51fc3ecc29961fe} 
+\index{MainWindow@{MainWindow}!closeCom@{closeCom}}
+\index{closeCom@{closeCom}!MainWindow@{MainWindow}}
+\doxysubsubsection{\texorpdfstring{closeCom()}{closeCom()}}
+{\footnotesize\ttfamily void Main\+Window\+::close\+Com (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Close the connection to the serial port. 
+
+Closes the connection to the COM port. \Hypertarget{class_main_window_ab39729538f26c661934d5f6d681bb014}\label{class_main_window_ab39729538f26c661934d5f6d681bb014} 
+\index{MainWindow@{MainWindow}!connectCom@{connectCom}}
+\index{connectCom@{connectCom}!MainWindow@{MainWindow}}
+\doxysubsubsection{\texorpdfstring{connectCom()}{connectCom()}}
+{\footnotesize\ttfamily void Main\+Window\+::connect\+Com (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Connect to the serial port. 
+
+Connects to the selected COM port. \Hypertarget{class_main_window_a59c3596d76311b6a7bcf4312841d367c}\label{class_main_window_a59c3596d76311b6a7bcf4312841d367c} 
+\index{MainWindow@{MainWindow}!handleReadyRead@{handleReadyRead}}
+\index{handleReadyRead@{handleReadyRead}!MainWindow@{MainWindow}}
+\doxysubsubsection{\texorpdfstring{handleReadyRead()}{handleReadyRead()}}
+{\footnotesize\ttfamily void Main\+Window\+::handle\+Ready\+Read (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Slot function to handle data ready to be read from the serial port. 
+
+Reads data from the serial port, updates the user interface, and performs LED control. \Hypertarget{class_main_window_acb51915d4e79932959241a11080a3de7}\label{class_main_window_acb51915d4e79932959241a11080a3de7} 
+\index{MainWindow@{MainWindow}!sendData@{sendData}}
+\index{sendData@{sendData}!MainWindow@{MainWindow}}
+\doxysubsubsection{\texorpdfstring{sendData()}{sendData()}}
+{\footnotesize\ttfamily void Main\+Window\+::send\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Send data through the serial port. 
+
+Sends data through the serial port to control the LED. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+mainwindow.\+h\item 
+mainwindow.\+cpp\end{DoxyCompactItemize}
